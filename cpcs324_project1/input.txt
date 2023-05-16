@@ -1,0 +1,10 @@
+diagraph 0 
+8 6
+A B 1 
+B C 3
+A C 2
+C D 4
+D E 7
+E C 5
+F C 6
+F E 8
