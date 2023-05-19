@@ -1,4 +1,5 @@
 
+
 package PhoneNetworkApp;
 
 import GraphFramework.Edge;
@@ -14,10 +15,7 @@ public class Line extends Edge{
        lLength = weight1 *5 ;
     }
     
-    public static Line createEdge(Vertex source1, Vertex target1 , int weight1 ){
-        return new Line (source1 , target1 , weight1);
-        
-    }
+    
     public int diplayInfo(){
         return lLength;
     }
