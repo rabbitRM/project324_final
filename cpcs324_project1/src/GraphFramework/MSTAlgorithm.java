@@ -8,14 +8,14 @@ public abstract class MSTAlgorithm {
     
    
   
-    public  ArrayList<GraphFramework.Edge> MSTResultList =  new ArrayList<GraphFramework.Edge>();
+  
+    protected  ArrayList<GraphFramework.Edge> MSTResultList =  new ArrayList<GraphFramework.Edge>();
     
-    // ======== I dont know what to do with this (:
-    public static Graph graph  ;
+    
+    protected static Graph graph  ;
    
     
-    public abstract void displayResultingMST( ArrayList<GraphFramework.Edge> MSTResultList);
-        
+    public abstract void displayResultingMST( ArrayList<GraphFramework.Edge> MSTResultList , boolean isReq1);
         
     
 }
