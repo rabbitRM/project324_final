@@ -6,11 +6,8 @@ import java.util.ArrayList;
 
 public abstract class MSTAlgorithm {
     
-     
-    int parent;
-
+   
   
-    int weight;
     public  ArrayList<GraphFramework.Edge> MSTResultList =  new ArrayList<GraphFramework.Edge>();
     
     // ======== I dont know what to do with this (:
@@ -18,6 +15,7 @@ public abstract class MSTAlgorithm {
    
     
     public abstract void displayResultingMST( ArrayList<GraphFramework.Edge> MSTResultList);
+        
         
     
 }
