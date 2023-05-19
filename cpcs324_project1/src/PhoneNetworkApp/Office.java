@@ -13,14 +13,17 @@ public class Office extends Vertex{
     //********
    
     
-    //*********
-//   public String setLabel (int num ){
-//       return "O"+num ;
-//   }
+   
+   public String setLabelO (int num ){
+       return "O"+num ;
+   }
     
-    public int displayInfo(){
-        return label ;
+    public String displayInfo(boolean isReq1){
+        if(isReq1)
+        return "Office No."+ (char)(super.getLabel()+'A');
+        else 
+        return "Office No." +setLabelO(getLabel());
     }
-    
+
     
 }
