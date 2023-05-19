@@ -12,14 +12,16 @@ import GraphFramework.Vertex;
  *
  * @author cvs
  */
-public class BluePrintsGraph extends Graph{
+public class BluePrintsGraph extends Graph {
      
-     public static Line createEdge(Vertex source1, Vertex target1 , int weight1 ){
-        return new Line (source1 , target1 , weight1);
+     
+     @Override
+     public Line createEdge(Vertex source, Vertex target , int weight){
+        return new Line (source , target , weight);
         
     }
-     
-      public static Office createVertex(char lable ){
+     @Override
+      public Office createVertex(int lable ){
         return new Office(lable);
     }
      
