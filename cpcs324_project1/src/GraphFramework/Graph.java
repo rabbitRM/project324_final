@@ -9,116 +9,90 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Random;
+import PhoneNetworkApp.BluePrintsGraph;
 
-public class Graph {
+public abstract class Graph{
 
     public static int vertexNo;
     public static int edgeNo;
     public static boolean isDiagraph;
     public static ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+    static LinkedList<Edge>[] adjacencylist;
     
-    public Graph(int edgeNo, boolean isDiagraph) {
+    public Graph(int edgeNo,int vno, boolean isDiagraph) {
+        vertexNo=vno;
         this.edgeNo = edgeNo;
         this.isDiagraph = isDiagraph;
+        
+        adjacencylist = new LinkedList[vno];
+            //initialize adjacency lists for all the vertices
+              for (int i = 0; i <vno ; i++) {
+               vertices.add(createVertex(i));
+            }
+            for (int i = 0; i <vno ; i++) {
+                adjacencylist[i] = new LinkedList<>();
+            }
     }
-
-    public Graph() {
-    }
+public Graph(){
     
-//    public static Office createVertex(char label ){
-//        return new Office(label );
-//    }
-//    public static Line createEdge(Vertex source, Vertex target , int weight){
-//        return new Line(source,  target ,  weight);
-//    }
+}
+   public abstract Vertex createVertex(int label ) ;
+  
+   
+
+   public abstract Edge createEdge(Vertex source, Vertex target , int weight);
+   
+    
      
     // method n takes as parameters the number of vertices and the number of edges
     // It is responsible for creating a graph object with the specified parameters 
     // and randomly initializes the vertices’ labels, creating edges that connects the created vertices randomly
     // and assigning them random weights alson Makeing sure that the resulting graph is connected. 
-    public static void makeGraph(int vno, int eno) {
 
-        Graph g = new Graph();
-
-        char ch = 'A';
-
-        // Adding the vertices to its list in the graph 
-        for (int i = 0; i < vno; i++) {
+     public void makeGraph(int vno , int eno , int isdia ) {
+       
+         vertexNo=vno;
+//        this.edgeNo = edgeNo;
+        this.isDiagraph = isdia == 0 ? false : true ;
+        adjacencylist = new LinkedList[vno];
+            //initialize adjacency lists for all the vertices
+            for (int i = 0; i <vno ; i++) {
+                adjacencylist[i] = new LinkedList<>();
+            }
             
-            g.vertices.add(Office.createVertex(i));
-
+        for (int i = 0; i < vertexNo; i++) {
+            
+            vertices.add(createVertex(i));
             // incrementing the vertices number as requested ! 
-            vertexNo++;
+//            vertexNo++;
         }
 
-        // creating random object to get random weights for the edges 
-        Random rand = new Random();
-
-        // Adding edges between random vertices
-        for (int i = 0; i < eno; i++) {
-            
-            // getting a random index to choose by it in the list 
-            int v1Index = rand.nextInt(vno);  
-            int v2Index = rand.nextInt(vno);
-            
-            // getting the random vertices from the list 
-            Vertex v1 = vertices.get(v1Index);
-            Vertex v2 = vertices.get(v2Index);
-            
-            
-            // if both vetices are not the same vertex AND they are not connected already 
-            if (v1 != v2 && ! areConnected(v1, v2)) {
-                
-                //getting a random weight from 1 - 40 
-                int weight = rand.nextInt(40) + 1;
-               
-                // adding the new edge 
-                addEdge(v1, v2, weight);
-                
-                // marking the two vetices as visited to not go through it again ! 
-                v1.isVisited = true;
-                v2.isVisited = true;
+       // object of Random class
+        Random randm = new Random();
+        // ensure that all verts are connected
+        for (int i = 0; i < vno - 1; i++) {
+            int weight = randm.nextInt(20) + 1;//generate random edge weights between 0-20
+            addEdge(vertices.get(i), vertices.get(i+1), weight);    //connect verts
+            if (!isDiagraph) {
+               addEdge(vertices.get(i+1), vertices.get(i), weight);  
             }
         }
 
-        // Adding extra edges to ensure connectivity
-        // going through all the vetices to check they are connected in the graph 
-        for (int i = 0; i < vno; i++) {
-            
-            // if there is a unvisited vertex
-            if (vertices.get(i).isVisited == false) {
-                
-                // going through all the vetices again to make sure to connect the unvisted vertex with random vertex
-                for (int j = 0; j < vno; j++) {
-                   
-                    // getting a random index to choose by it in the list 
-                    int vIndex = rand.nextInt(vno);
-                    
-                    // getting the random vertex from the list 
-                    Vertex v = vertices.get(vIndex);
-                    
-                    // if both vetices are not the same vertex AND they are not connected already && v.isVisited == false
-                    //**********
-                    if (vertices.get(i) != v && v.isVisited == false) {
-                       
-                        // adding the new edge 
-                        addEdge(vertices.get(i), v, rand.nextInt(40) + 1);
-                        
-                        // marking the two vetices as visited to not go through it again ! 
-                        vertices.get(i).isVisited = true;
-                        v.isVisited = true;
-                        
-                        break;
-                    }
-                }
+        // generate edges bewteen verts with the remaining edges
+        int remEdges = eno - (vno - 1);
 
+        for (int i = 0; i < remEdges; i++) {
+            int source = randm.nextInt(vertexNo);
+            int target = randm.nextInt(vertexNo);
+            if (target == source || areConnected(vertices.get(source), vertices.get(target))) { // to avoid self loops and duplicate edges
+                i--;
+                continue;
             }
+            // generate random weights in range 0 to 20
+            int weight = randm.nextInt(20) + 1;
+            // add edge to the graph
+            addEdge(vertices.get(source), vertices.get(target), weight);
 
-        }
-        
-        // return the valuse to the default to use later
-        for (int i = 0; i < vno; i++) {
-            vertices.get(i).isVisited = false ;
         }
 
     }
@@ -145,11 +119,10 @@ public class Graph {
 
     // method that reads the edges and vertices from the text file whose name is
     // specified by the parameter filename and place the data in the Graph
-    public static void readGraphFromFile(String fileName) throws FileNotFoundException {
+    public  void readGraphFromFile(String fileName) throws FileNotFoundException {
 
         int eno = 0, vno = 0;
         
-        Graph g = new Graph();
         
         // checking if the file exist and print 
         File f = new File(fileName);
@@ -173,7 +146,15 @@ public class Graph {
         
         eno = input.nextInt();
         vno = input.nextInt();
+      
         
+       
+        adjacencylist = new LinkedList[vno];
+            //initialize adjacency lists for all the vertices
+            for (int i = 0; i <vno ; i++) {
+                adjacencylist[i] = new LinkedList<>();
+            }
+            
         // list to store the labels 
         int[] listLabels = new int[vno];
         
@@ -214,7 +195,7 @@ public class Graph {
         // Adding the vertices to its list in the graph
         for (int i = 0; i < vno; i++) {
           
-            g.vertices.add(Office.createVertex(listLabels[i]));
+            vertices.add(createVertex(listLabels[i]));
             
             // incrementing the vertices number as requested ! 
             vertexNo++;
@@ -263,27 +244,25 @@ public class Graph {
 
     }
 
-    public static void addEdge(Vertex v, Vertex u, int w) {
 
-        // creating the edge from the source to the target 
-        Edge edge1 = Line.createEdge(v, u, w);
+     public  void addEdge(Vertex source, Vertex target, int weight) {
+            Edge edge = createEdge(source, target, weight);
+            adjacencylist[source.label].addFirst(edge);
 
-        // creating the edge from the target to the source in case of undirected 
-        Edge edge2 = Line.createEdge(u, v, w);
-
-        // if the graph is dirceted graph then only assign from source to taget --> 
-        if (isDiagraph) {
-            v.adjLists.add(edge1);
-            edgeNo++;
+            Edge edge2 = createEdge(target, source, weight);
+            adjacencylist[target.label].addFirst(edge2);
+            
+           if (isDiagraph) {
+            source.adjLists.add(edge); edgeNo++;
+            
         } // if the graph is dirceted graph then both assign from source to taget
         // and from taget to source --> <--
         else {
-            v.adjLists.add(edge1);
-            u.adjLists.add(edge2);
-            edgeNo += 2;
+            source.adjLists.add(edge);  edgeNo += 2;
+            target.adjLists.add(edge2);
+           
         }
-
-    }
+        }
     
 
 }
