@@ -94,7 +94,7 @@ public Graph(){
 
      public void makeGraph(int vno , int eno , int isdia ) {
        
-         vertexNo=vno;
+         
 //        this.edgeNo = edgeNo;
         this.isDiagraph = isdia == 0 ? false : true ;
         adjacencylist = new LinkedList[vno];
@@ -104,11 +104,11 @@ public Graph(){
             }
             
             
-        for (int i = 0; i < vertexNo; i++) {
+        for (int i = 0; i < vno; i++) {
             
             vertices.add(createVertex(i));
             // incrementing the vertices number as requested ! 
-//            vertexNo++;
+           vertexNo++;
         }
 
        // object of Random class
