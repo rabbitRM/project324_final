@@ -3,17 +3,14 @@ package GraphFramework;
 
 import java.util.LinkedList;
 
-public class Vertex {
+public abstract class Vertex {
     
-    public int label ;
-    public boolean isVisited ;    
-    public  LinkedList<Edge> adjLists = new LinkedList<>();
-   public Vertex parent;
+    private int label ;
+    private boolean isVisited ;    
+    private LinkedList<Edge> adjLists = new LinkedList<>();
+   
 
-    public void setParent(Vertex parent) {
-        this.parent = parent;
-    }
-    
+   
     public Vertex(int label ){
         this.label = label ;
         isVisited = false ;
@@ -23,14 +20,15 @@ public Edge getMinEdge(){
         int cost = Integer.MAX_VALUE ;
         Edge min =null;
         for (int i = 0; i < adjLists.size(); i++) {
-            if(adjLists.get(i).weight < cost){
-                cost = adjLists.get(i).weight;
+            if(adjLists.get(i).getWeight() < cost){
+                cost = adjLists.get(i).getWeight();
                 min = adjLists.get(i);
             }
         }
         return min ;
     }
-    public void setLabel(int label) {
+   
+   public void setLabel(int label) {
         this.label = label;
     }
 
@@ -44,14 +42,21 @@ public Edge getMinEdge(){
     public Vertex(){
         
     }
+
+    public int getLabel() {
+        return label;
+    }
+
+    public boolean isIsVisited() {
+        return isVisited;
+    }
     
-    public LinkedList<Edge> getEdges() {
+    public LinkedList<Edge> getAdjLists() {
         return adjLists;
     }
     
-    public int displayInfo (){
-        return label ;
-    }
+    public abstract String displayInfo (boolean isReq1);
+
     
   
 }
