@@ -1,10 +1,10 @@
 package GraphFramework;
 
-public class Edge implements Comparable<Edge>{
-    public int weight ;
-    public Vertex source ;
-    public Vertex target ;
-    public Vertex parent ;
+public abstract class Edge implements Comparable<Edge>{
+    private int weight ;
+    private Vertex source ;
+    private Vertex target ;
+    private Vertex parent ;
     
 //    public Vertex parent ;
     
@@ -12,6 +12,12 @@ public class Edge implements Comparable<Edge>{
         this.weight = weight;
         this.source = source;
         this.target = target;
+        
+    }
+    public Edge( Vertex source,  int weight) {
+        this.weight = weight;
+        this.source = source;
+      
         
     }
     public Edge(){
@@ -25,28 +31,14 @@ public class Edge implements Comparable<Edge>{
         return target;
     }
     
-    public int getWeight() {
-        return weight;
-    }
+   public abstract int getWeight() ;
 
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
 
-    public void setSource(Vertex source) {
-        this.source = source;
-    }
+      public abstract String displayInfo();
 
-    public void setTarget(Vertex target) {
-        this.target = target;
-    }
-    
-      
-      public int displayInfo(){
-          return weight;
-      }
       
        public int compareTo(Edge other) {
         return Integer.compare(weight, other.weight);
     }
+       
 }
