@@ -13,11 +13,54 @@ import PhoneNetworkApp.BluePrintsGraph;
 
 public abstract class Graph{
 
-    public static int vertexNo;
-    public static int edgeNo;
-    public static boolean isDiagraph;
-    public static ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-    static LinkedList<Edge>[] adjacencylist;
+    public static int getVertexNo() {
+        return vertexNo;
+    }
+
+    public static void setVertexNo(int vertexNo) {
+        Graph.vertexNo = vertexNo;
+    }
+
+    public static int getEdgeNo() {
+        return edgeNo;
+    }
+
+    public static void setEdgeNo(int edgeNo) {
+        Graph.edgeNo = edgeNo;
+    }
+
+    public static boolean isIsDiagraph() {
+        return isDiagraph;
+    }
+
+    public static void setIsDiagraph(boolean isDiagraph) {
+        Graph.isDiagraph = isDiagraph;
+    }
+
+    public static ArrayList<Vertex> getVertices() {
+        return vertices;
+    }
+
+    public static void setVertices(ArrayList<Vertex> vertices) {
+        Graph.vertices = vertices;
+    }
+
+    public static LinkedList<Edge> getAdjacencylist( int index) {
+        return adjacencylist[index];
+    }
+      public static LinkedList<Edge>[] getAdjacencylist() {
+        return adjacencylist;
+    }
+
+    public static void setAdjacencylist(LinkedList<Edge>[] adjacencylist) {
+        Graph.adjacencylist = adjacencylist;
+    }
+
+    private static int vertexNo;
+    private static int edgeNo;
+    private static boolean isDiagraph;
+    private static ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+    private static LinkedList<Edge>[] adjacencylist;
     
     public Graph(int edgeNo,int vno, boolean isDiagraph) {
         vertexNo=vno;
@@ -60,6 +103,7 @@ public Graph(){
                 adjacencylist[i] = new LinkedList<>();
             }
             
+            
         for (int i = 0; i < vertexNo; i++) {
             
             vertices.add(createVertex(i));
@@ -101,14 +145,14 @@ public Graph(){
     public static boolean areConnected(Vertex v1, Vertex v2) {
 
             // getting the size of the adjList that store the edges to ba able to through it 
-            int size = v1.adjLists.size();
+            int size = v1.getAdjLists().size();
            
             // loop to got through the edges of a specefic vertex 
             for (int j = 0; j < size; j++) {
                 
                 // if one if the vertices is a source and the other is a target then they are connected (:
-                if ((v1.adjLists.get(j).source == v1 && v1.adjLists.get(j).target == v2)
-                        || (v1.adjLists.get(j).source == v2 && v1.adjLists.get(j).target == v1)) {
+                if ((v1.getAdjLists().get(j).getSource() == v1 && v1.getAdjLists().get(j).getTarget() == v2)
+                        || (v1.getAdjLists().get(j).getSource() == v2 && v1.getAdjLists().get(j).getTarget() == v1)) {
                     return true;
                 }
 
@@ -220,11 +264,11 @@ public Graph(){
             for (int j = 0; j < vertices.size(); j++) {
                 
                 // if the current vertixs’s labels is the same labels 
-                if (vertices.get(j).label == label1 - 'A') 
+                if (vertices.get(j).getLabel() == label1 - 'A') 
                     
                     v1 = vertices.get(j);
                     
-               else if (vertices.get(j).label == label2-'A') 
+               else if (vertices.get(j).getLabel() == label2-'A') 
                    
                     v2 = vertices.get(j);
                 
@@ -247,22 +291,26 @@ public Graph(){
 
      public  void addEdge(Vertex source, Vertex target, int weight) {
             Edge edge = createEdge(source, target, weight);
-            adjacencylist[source.label].addFirst(edge);
+            
+            
 
             Edge edge2 = createEdge(target, source, weight);
-            adjacencylist[target.label].addFirst(edge2);
+           
             
            if (isDiagraph) {
-            source.adjLists.add(edge); edgeNo++;
-            
+            source.getAdjLists().add(edge); edgeNo++;
+            adjacencylist[source.getLabel()].addFirst(edge);
         } // if the graph is dirceted graph then both assign from source to taget
         // and from taget to source --> <--
         else {
-            source.adjLists.add(edge);  edgeNo += 2;
-            target.adjLists.add(edge2);
+            adjacencylist[source.getLabel()].addFirst(edge);  
+            adjacencylist[target.getLabel()].addFirst(edge2);
+            source.getAdjLists().add(edge);  edgeNo += 2;
+            target.getAdjLists().add(edge2);
            
         }
         }
-    
-
+     
+     
+        
 }
