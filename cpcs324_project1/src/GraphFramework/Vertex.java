@@ -19,7 +19,17 @@ public class Vertex {
         isVisited = false ;
         
     }
-
+public Edge getMinEdge(){
+        int cost = Integer.MAX_VALUE ;
+        Edge min =null;
+        for (int i = 0; i < adjLists.size(); i++) {
+            if(adjLists.get(i).weight < cost){
+                cost = adjLists.get(i).weight;
+                min = adjLists.get(i);
+            }
+        }
+        return min ;
+    }
     public void setLabel(int label) {
         this.label = label;
     }
