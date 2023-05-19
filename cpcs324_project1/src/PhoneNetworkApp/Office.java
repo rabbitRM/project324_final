@@ -11,16 +11,13 @@ public class Office extends Vertex{
     }
     
     //********
-    public static Office createVertex(int lable ){
-        return new Office(lable);
-    }
-    
+   
     
     //*********
-//    public String setLabel (int num ){
-//        return "O"+num ;
-//    }
-//    
+//   public String setLabel (int num ){
+//       return "O"+num ;
+//   }
+    
     public int displayInfo(){
         return label ;
     }
